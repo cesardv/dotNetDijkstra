@@ -17,6 +17,8 @@ namespace Dijkstra.DataStructures
 
         public bool Visited { get; set; }
 
+        public Node ParentNode { get; set; }
+
         public Node()
         {
             this.AdjacentList = new List<Node>();
@@ -32,7 +34,7 @@ namespace Dijkstra.DataStructures
 
         int IComparable<Node>.CompareTo(Node other)
         {
-            return other.Distance - this.Distance;
+            return this.Distance - other.Distance;  // if we get a negative result, that means this node's distance is less than the other.
         }
     }
 }
