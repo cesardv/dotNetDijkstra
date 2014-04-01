@@ -16,17 +16,18 @@
 
             PrintHeader();
 
-            if (args.Count() != 0 && File.Exists(args[0]))
-            {
+            var validfile = string.Empty;
 
-                Console.WriteLine("Loading file {0} ...", args[0]);
-                // some reader class to create Graph representation
+            if (args.Count() != 0 && File.Exists(args[0])) // If cmd-line passed filepath is wrong fail silently and prompt
+            {
+                Console.WriteLine("Loading passed commandline params ...");
+                validfile = Path.GetFullPath(args[0]);
             }
             else
             {
                 // Ask user to input file location
                 var tries = 3;
-                var validfile = "";
+
                 while (tries >= 0)
                 {
                     Console.WriteLine("Please enter the file path of the graph (data) file: (Ex: C:\\graphs\\g1.txt)");
@@ -42,26 +43,25 @@
 
                     if (tries < 0)
                     {
-                        Console.WriteLine("You have exceeded the allowed number of tries, the program will now exit!\nBye");
+                        Console.WriteLine(
+                            "You have exceeded the allowed number of tries, the program will now exit!\nBye");
                         Console.ReadKey();
                         return;
                     }
                 }
-
-
-                // now parse file and create data structure
-                Console.WriteLine("Loading file " + validfile);
-                try
-                {
-                    var binheap = GraphReader.CreateBinHeap(validfile);
-                }
-                catch (Exception exc)
-                {
-                    Console.WriteLine(exc.Message);
-                    Console.ReadKey();
-                }
             }
-
+            
+            // now parse file and create data structure
+            Console.WriteLine("Loading file " + validfile);
+            try
+            {
+                var binheap = GraphReader.CreateBinHeap(validfile);
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc.Message);
+                Console.ReadKey();
+            }
         }
 
         private static void PrintHeader()

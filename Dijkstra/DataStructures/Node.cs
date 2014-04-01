@@ -15,6 +15,8 @@ namespace Dijkstra.DataStructures
 
         public IList<Node> AdjacentList { get; set; }
 
+        public bool Visited { get; set; }
+
         public Node()
         {
             this.AdjacentList = new List<Node>();
