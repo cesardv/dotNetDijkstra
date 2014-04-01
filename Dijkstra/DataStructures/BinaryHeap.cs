@@ -27,7 +27,9 @@
         private int _capacity = DEFAULT_SIZE;
         private bool _sorted;
  
+
         // Properties
+
         /// <summary>
         /// Gets the number of values in the heap. 
         /// </summary>
@@ -53,26 +55,33 @@
                 }
             }
         }
+        
         // Methods
+
         /// <summary>
-        /// Creates a new binary heap.
+        /// Initializes a new binary heap with no arguments passed.
         /// </summary>
         public BinaryHeap()
         {
         }
+
+        /// <summary>
+        /// Initializes a new binary heap with some data passed.
+        /// </summary>
         private BinaryHeap(T[] data, int count)
         {
-            Capacity = count;
-            _count = count;
-            Array.Copy(data, _data, count);
+            this.Capacity = count;
+            this._count = count;
+            Array.Copy(data, this._data, count);
         }
+
         /// <summary>
         /// Gets the first value in the heap without removing it.
         /// </summary>
         /// <returns>The lowest value of type TValue.</returns>
         public T Peek()
         {
-            return _data[0];
+            return this._data[0];
         }
  
         /// <summary>
@@ -81,7 +90,7 @@
         public void Clear()
         {
             this._count = 0;
-            _data = new T[_capacity];
+            this._data = new T[this._capacity];
         }
         /// <summary>
         /// Adds a key and value to the heap.
@@ -89,13 +98,14 @@
         /// <param name="item">The item to add to the heap.</param>
         public void Add(T item)
         {
-            if (_count == _capacity)
+            if (this._count == this._capacity)
             {
-                Capacity *= 2;
+                this.Capacity *= 2;
             }
-            _data[_count] = item;
-            UpHeap();
-            _count++;
+
+            this._data[this._count] = item;
+            this.UpHeap();
+            this._count++;
         }
  
         /// <summary>
@@ -108,41 +118,58 @@
             {
                 throw new InvalidOperationException("Cannot remove item, heap is empty.");
             }
+            
             T v = _data[0];
-            _count--;
-            _data[0] = _data[_count];
-            _data[_count] = default(T); //Clears the Last Node
-            DownHeap();
+            
+            this._count--;
+            this._data[0] = this._data[this._count];
+            this._data[this._count] = default(T); // Clears the Last Node
+            this.DownHeap();
             return v;
         }
+
+        /// <summary>
+        /// helper function that performs up-heap bubbling
+        /// </summary>
         private void UpHeap()
-        //helper function that performs up-heap bubbling
         {
             _sorted = false;
-            int p = _count;
-            T item = _data[p];
+            int p = this._count;
+            T item = this._data[p];
             int par = Parent(p);
-            while (par > -1 && item.CompareTo(_data[par]) < 0)
+            while (par > -1 && item.CompareTo(this._data[par]) < 0)
             {
-                _data[p] = _data[par]; //Swap nodes
+                this._data[p] = this._data[par]; // Swap nodes
                 p = par;
                 par = Parent(p);
             }
-            _data[p] = item;
+
+            this._data[p] = item;
         }
+
+
+        /// <summary>
+        /// helper function that performs down-heap bubbling
+        /// </summary>
         private void DownHeap()
-        //helper function that performs down-heap bubbling
         {
-            _sorted = false;
+            this._sorted = false;
             int n;
             int p = 0;
-            T item = _data[p];
+            T item = this._data[p];
+            
             while (true)
             {
                 int ch1 = Child1(p);
-                if (ch1 >= _count) break;
+                
+                if (ch1 >= this._count)
+                {
+                    break;
+                }
+
                 int ch2 = Child2(p);
-                if (ch2 >= _count)
+                
+                if (ch2 >= this._count)
                 {
                     n = ch1;
                 }
@@ -150,9 +177,10 @@
                 {
                     n = _data[ch1].CompareTo(_data[ch2]) < 0 ? ch1 : ch2;
                 }
-                if (item.CompareTo(_data[n]) > 0)
+
+                if (item.CompareTo(this._data[n]) > 0)
                 {
-                    _data[p] = _data[n]; //Swap nodes
+                    this._data[p] = this._data[n]; //Swap nodes
                     p = n;
                 }
                 else
@@ -160,26 +188,43 @@
                     break;
                 }
             }
-            _data[p] = item;
+
+            this._data[p] = item;
         }
+
         private void EnsureSort()
         {
             if (_sorted) return;
             Array.Sort(_data, 0, _count);
             _sorted = true;
         }
+
+        /// <summary>
+        /// helper function that calculates the parent of a node
+        /// </summary>
+        /// <param name="index">Index of the node of which we want the parent</param>
+        /// <returns>Index of the parent node</returns>
         private static int Parent(int index)
-        //helper function that calculates the parent of a node
         {
             return (index - 1) >> 1;
         }
+
+        /// <summary>
+        /// helper function that calculates the first child of a node
+        /// </summary>
+        /// <param name="index">Index of the node of which we want the child</param>
+        /// <returns>Index of the left child</returns>
         private static int Child1(int index)
-        //helper function that calculates the first child of a node
         {
             return (index << 1) + 1;
         }
+
+        /// <summary>
+        /// helper function that calculates the second child of a node
+        /// </summary>
+        /// <param name="index">Index of the node of which we want the child</param>
+        /// <returns>Index of the right child</returns>
         private static int Child2(int index)
-        //helper function that calculates the second child of a node
         {
             return (index << 1) + 2;
         }
@@ -190,7 +235,7 @@
         /// <returns>A BinaryHeap.</returns>
         public BinaryHeap<T> Copy()
         {
-            return new BinaryHeap<T>(_data, _count);
+            return new BinaryHeap<T>(this._data, this._count);
         }
  
         /// <summary>
@@ -200,11 +245,13 @@
         public IEnumerator<T> GetEnumerator()
         {
             EnsureSort();
-            for (int i = 0; i < _count; i++)
+            for (int i = 0; i < this._count; i++)
             {
-                yield return _data[i];
+                yield return this._data[i];
             }
         }
+
+
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
@@ -217,9 +264,10 @@
         /// <returns>A boolean, true if binary heap contains item.</returns>
         public bool Contains(T item)
         {
-            EnsureSort();
-            return Array.BinarySearch<T>(_data, 0, _count, item) >= 0;
+            this.EnsureSort();
+            return Array.BinarySearch<T>(this._data, 0, this._count, item) >= 0;
         }
+
         /// <summary>
         /// Copies the binary heap to an array at the specified index.
         /// </summary>
@@ -228,8 +276,9 @@
         public void CopyTo(T[] array, int arrayIndex)
         {
             EnsureSort();
-            Array.Copy(_data, array, _count);
+            Array.Copy(this._data, array, this._count);
         }
+
         /// <summary>
         /// Gets whether or not the binary heap is readonly.
         /// </summary>
@@ -237,6 +286,7 @@
         {
             get { return false; }
         }
+
         /// <summary>
         /// Removes an item from the binary heap. This utilizes the type T's Comparer and will not remove duplicates.
         /// </summary>
@@ -244,12 +294,17 @@
         /// <returns>Boolean true if the item was removed.</returns>
         public bool Remove(T item)
         {
-            EnsureSort();
-            int i = Array.BinarySearch<T>(_data, 0, _count, item);
-            if (i < 0) return false;
-            Array.Copy(_data, i + 1, _data, i, _count - i);
-            _data[_count] = default(T);
-            _count--;
+            this.EnsureSort();
+
+            int i = Array.BinarySearch<T>(this._data, 0, this._count, item);
+            if (i < 0)
+            {
+                return false;
+            }
+
+            Array.Copy(this._data, i + 1, this._data, i, this._count - i);
+            this._data[this._count] = default(T);
+            this._count--;
             return true;
         }
  
