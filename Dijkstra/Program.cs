@@ -7,7 +7,7 @@
     using System.Threading.Tasks;
     using System.IO;
 
-    using Dijkstra.Helpers;
+    using My = global::Dijkstra.Helpers;
 
     public class Program
     {
@@ -55,7 +55,7 @@
             Console.WriteLine("Loading file " + validfile);
             try
             {
-                var binheap = GraphReader.CreateBinHeap(validfile);
+                var binheap = My.GraphReader.CreateBinHeap(validfile);
             }
             catch (Exception exc)
             {

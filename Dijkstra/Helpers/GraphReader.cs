@@ -4,23 +4,23 @@
     using System.IO;
     using System.Text.RegularExpressions;
 
-    using Dijkstra.DataStructures;
+    using My = global::Dijkstra.DataStructures;
 
     public class GraphReader
     {
-        public static BinaryHeap<Node> CreateBinHeap(string filetoread)
+        public static My.BinaryHeap<My.Node> CreateBinHeap(string filetoread)
         {
             if (!File.Exists(filetoread))
             {
                 throw new Exception("Cannot find or read file");
             }
 
-            var bheap = new BinaryHeap<Node>();
+            var bheap = new My.BinaryHeap<My.Node>();
             var nodeCount = 0;
             var edges = 0;
 
             var gfile = File.ReadAllLines(filetoread);
-            var node = new Node();
+            var node = new My.Node();
 
             var nodeIdregex = new Regex(@"^\d+");
             var adjacentNodeRegex = new Regex(@"\s+\d+\s+\d+");
@@ -42,7 +42,7 @@
                 else if (adjacentNodeRegex.IsMatch(line))
                 {
                     var neighborMatch = Regex.Matches(line, @"\d+");
-                    var neighbor = new Node();
+                    var neighbor = new My.Node();
                     neighbor.Id = Convert.ToInt32(neighborMatch[0].Value);
                     neighbor.Distance = Convert.ToInt32(neighborMatch[1].Value);
                     node.AdjacentList.Add(neighbor);
@@ -50,7 +50,7 @@
                 else if (string.IsNullOrWhiteSpace(line))
                 {
                     bheap.Add(node);
-                    node = new Node();
+                    node = new My.Node();
                 }
             }
 
