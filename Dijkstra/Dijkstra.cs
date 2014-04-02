@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using global::Dijkstra.DataStructures;
 
@@ -51,9 +52,10 @@
                 u.Visited = true;
                 this.visitedNodes.Add(u);
 
-                foreach (var neighbor in u.AdjacentList)
+                foreach (var kvp in u.AdjacentList)
                 {
-                    this.RelaxEdge(u, neighbor);
+                    var neighbornode = this.Graph.FirstOrDefault(n => n.Id == kvp.Key); // this.Graph.FirstOrDefault()
+                    this.RelaxEdge(u, neighbornode);
                 }
             }
 
@@ -67,7 +69,7 @@
         {
             foreach (var node in this.Graph)
             {
-                node.Distance = int.MaxValue; // MaxValue will be sentinel for infinity
+                node.Distance = 999999; // (1 million - 1) will be sentinel value for infinity
                 node.ParentNode = null;
             }
 
@@ -79,13 +81,7 @@
         /// </summary>
         protected void RelaxEdge(Node startNode, Node endNeighbor)
         {
-            var indexOfNeighbor = startNode.AdjacentList.IndexOf(endNeighbor);
-            if (indexOfNeighbor < 0 || !startNode.AdjacentList.Contains(endNeighbor))
-            {
-                throw new Exception("Can't find neighbor, thus can relax edge between these two vertices.");
-            }
-
-            var edgeDistance = startNode.AdjacentList[indexOfNeighbor].Distance;
+            var edgeDistance = startNode.AdjacentList[endNeighbor.Id];
 
             if (endNeighbor.Distance > startNode.Distance + edgeDistance)
             {

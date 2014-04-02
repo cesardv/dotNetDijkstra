@@ -5,32 +5,39 @@ namespace Dijkstra.DataStructures
     using System.Collections;
     using System.Collections.Generic;
 
+    /// <summary>
+    /// Represents a Node in a Graph
+    /// </summary>
     public class Node : IComparable<Node>
     {
-        public int Id { get; set; }
-
-        public bool IsSource { get; set; }
-
-        public int Distance { get; set; }
-
-        public IList<Node> AdjacentList { get; set; }
-
-        public bool Visited { get; set; }
-
-        public Node ParentNode { get; set; }
 
         public Node()
         {
-            this.AdjacentList = new List<Node>();
+            this.AdjacentList = new Dictionary<int, int>();
         }
 
-        public Node(int id, int distance, IList<Node> neighbors, bool isSource = false)
+        public Node(int id, int distance, Dictionary<int,int> neighbors, bool isSource = false)
         {
             this.Id = id;
             this.Distance = distance;
             this.AdjacentList = neighbors;
             this.IsSource = isSource;
         }
+
+        public int Id { get; set; }
+
+        public bool IsSource { get; set; }
+
+        public int Distance { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Id of the neighbor and the distance
+        /// </summary>
+        public Dictionary<int, int> AdjacentList { get; set; }
+
+        public bool Visited { get; set; }
+
+        public Node ParentNode { get; set; }
 
         int IComparable<Node>.CompareTo(Node other)
         {

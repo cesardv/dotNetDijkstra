@@ -7,6 +7,8 @@
     using System.Threading.Tasks;
     using System.IO;
 
+    using global::Dijkstra.DataStructures;
+
     using My = global::Dijkstra.Helpers;
 
     public class Program
@@ -52,19 +54,33 @@
             }
             
             // now parse file and create data structure
-            Console.WriteLine("Loading file " + validfile);
+            Console.WriteLine("Loading data from file: " + Path.GetFileName(validfile));
             try
             {
                 //var binheap = My.GraphReader.CreateBinHeap(validfile);
                 var graph = My.GraphReader.CreateGraphList(validfile);
-                var dijkstra = new Dijkstra(graph, graph.First());
-                dijkstra.Run();
+                var sourceNodeDesired = graph.First();
+                var idofsourcenode = sourceNodeDesired.Id;
+                var dijkstra = new Dijkstra(graph, sourceNodeDesired);
+                var result = dijkstra.Run();
+                //result.Remove(sourceNodeDesired); // source has distance 0 
+                //var shortestPath = result.Min(n => n.Distance);
+                var res = result.TakeWhile(n => n.ParentNode != null);
+                var lenghtofSPTree = res.Sum(n => n.Distance);
+
+                PrintResults(res);
+
             }
             catch (Exception exc)
             {
                 Console.WriteLine(exc.Message);
                 Console.ReadKey();
             }
+        }
+
+        protected static void PrintResults(IEnumerable<Node> res)
+        {
+            var outStr = string.Format("From source node #{} the shortests distances are as follows");
         }
 
         private static void PrintHeader()
