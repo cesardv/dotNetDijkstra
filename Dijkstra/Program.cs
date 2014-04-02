@@ -55,7 +55,10 @@
             Console.WriteLine("Loading file " + validfile);
             try
             {
-                var binheap = My.GraphReader.CreateBinHeap(validfile);
+                //var binheap = My.GraphReader.CreateBinHeap(validfile);
+                var graph = My.GraphReader.CreateGraphList(validfile);
+                var dijkstra = new Dijkstra(graph, graph.First());
+                dijkstra.Run();
             }
             catch (Exception exc)
             {

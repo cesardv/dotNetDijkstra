@@ -20,7 +20,7 @@
         /// <summary>
         /// Initializes class instance to run Dijkstra's algorithm on a graph
         /// </summary>
-        /// <param name="graph">Graph</param>
+        /// <param name="graph">Graph to be used</param>
         /// <param name="source">Source or start node</param>
         public Dijkstra(IList<Node> graph, Node source)
         {
@@ -34,7 +34,6 @@
             {
                 throw new Exception("Cannot run Dijkstra without proper graph and source node.");
             }
-
 
             this.Initialize();
             this.Source.Visited = true;
