@@ -63,11 +63,9 @@
                 var idofsourcenode = sourceNodeDesired.Id;
                 var dijkstra = new Dijkstra(graph, sourceNodeDesired);
                 var result = dijkstra.Run();
-                //result.Remove(sourceNodeDesired); // source has distance 0 
-                //var shortestPath = result.Min(n => n.Distance);
-                var res = result.TakeWhile(n => n.ParentNode != null);
+                var res = result.Where(n => n.ParentNode != null && n.Distance != 999999);
                 var lenghtofSPTree = res.Sum(n => n.Distance);
-
+                Console.WriteLine("\nLength of SP tree: " + lenghtofSPTree);
                 PrintResults(res);
 
             }
@@ -80,7 +78,18 @@
 
         protected static void PrintResults(IEnumerable<Node> res)
         {
-            var outStr = string.Format("From source node #{} the shortests distances are as follows");
+            var outStr = string.Format("From source node #{0} the shortests distances are as follows:\r\n\r\n", res.First().Id);
+            foreach (var n in res)
+            {
+                outStr += string.Format("node#{0}  {1}\r\n", n.Id, n.Distance);
+            }
+
+            var t = DateTime.Now.Ticks;
+            var fn = string.Format("output-{0}.txt", t);
+            File.WriteAllText(fn + ".txt", outStr);
+            Console.WriteLine("Output File created at: {0}", Path.GetFullPath("."));
+            // System.Diagnostics.Process.Start(Path.GetFullPath(Directory.GetCurrentDirectory() + "\\" + fn));
+
         }
 
         private static void PrintHeader()

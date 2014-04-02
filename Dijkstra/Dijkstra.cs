@@ -39,15 +39,17 @@
             this.Initialize();
             this.Source.Visited = true;
             this.visitedNodes = new List<Node>();
-            var bheap = new BinaryHeap<Node>();
-            foreach (var node in this.Graph)
-            {
-                bheap.Add(node);
-            }
+            var bheap = this.Graph.ToList();
+            //foreach (var node in this.Graph)
+            //{
+            //    bheap.Add(new Node());
+            //}
 
             while (bheap.Count > 0)
             {
-                var u = bheap.Remove();  // extract node with smallest distance value, on first iteration always source node
+                var u = bheap.Min();  // extract node with smallest distance value, on first iteration always source node
+                bheap.Remove(u);
+                
                 // visit u
                 u.Visited = true;
                 this.visitedNodes.Add(u);
@@ -59,7 +61,7 @@
                 }
             }
 
-            return this.Graph;
+            return this.visitedNodes;
         }
 
         /// <summary>
