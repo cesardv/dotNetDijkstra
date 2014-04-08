@@ -59,7 +59,7 @@
             {
                 //var binheap = My.GraphReader.CreateBinHeap(validfile);
                 var graph = My.GraphReader.CreateGraphList(validfile);
-                var sourceNodeDesired = graph.First();
+                var sourceNodeDesired = graph.Single(n => n.Id == 0);
                 var idofsourcenode = sourceNodeDesired.Id;
                 var dijkstra = new Dijkstra(graph, sourceNodeDesired);
                 var result = dijkstra.Run();
@@ -67,6 +67,9 @@
                 var lenghtofSPTree = res.Sum(n => n.Distance);
                 Console.WriteLine("\nLength of SP tree: " + lenghtofSPTree);
                 PrintResults(res);
+
+                Console.WriteLine("\nWe're done. Please press any key to exit...");
+                Console.ReadKey();
 
             }
             catch (Exception exc)
@@ -86,7 +89,7 @@
 
             var t = DateTime.Now.Ticks;
             var fn = string.Format("output-{0}.txt", t);
-            File.WriteAllText(fn + ".txt", outStr);
+            File.WriteAllText(fn, outStr);
             Console.WriteLine("Output File created at: {0}", Path.GetFullPath("."));
             // System.Diagnostics.Process.Start(Path.GetFullPath(Directory.GetCurrentDirectory() + "\\" + fn));
 
