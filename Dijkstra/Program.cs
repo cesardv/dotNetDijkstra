@@ -66,7 +66,7 @@
                 var res = result.Where(n => n.ParentNode != null && n.Distance != 999999);
                 var lenghtofSPTree = res.Sum(n => n.Distance);
                 Console.WriteLine("\nLength of SP tree: " + lenghtofSPTree);
-                PrintResults(res);
+                PrintResults(res, idofsourcenode);
 
                 Console.WriteLine("\nWe're done. Please press any key to exit...");
                 Console.ReadKey();
@@ -79,9 +79,9 @@
             }
         }
 
-        protected static void PrintResults(IEnumerable<Node> res)
+        protected static void PrintResults(IEnumerable<Node> res, int sourceId)
         {
-            var outStr = string.Format("From source node #{0} the shortests distances are as follows:\r\n\r\n", res.First().Id);
+            var outStr = string.Format("From source node #{0} the shortests distances are as follows:\r\n\r\n", sourceId);
             foreach (var n in res)
             {
                 outStr += string.Format("node#{0}  {1}\r\n", n.Id, n.Distance);
